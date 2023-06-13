@@ -1,0 +1,44 @@
+{% extends 'finance/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class='row' style='margin-top:5px'>
+  <div class='col-md-3'>
+    {% include 'finance/sidebar.html' %}
+  </div>
+  <div class='col-md-8'>
+    <div class='card'>
+    <div class=' card-header' style='margin-left:20px;'><h4>Want to pay your debt now?</h4></div>
+    <div class='card-body'  style='margin-left:20px;'>
+        <p> <b>Taken From :</b> {{debt.taken_from}}</p>
+        <p> <b>Amount :</b> {{debt.amount}}</p>
+        <p> <b>Taken Date :</b> {{debt.taken_date}}</p>
+        <p> <b>Current Status :</b> {{debt.status}}</p>
+        <form class="" action="" method="POST">
+            
+            {% csrf_token %}
+            {{form|crispy}}
+          
+            <button class="btn btn-success" type="Submit" >Pay Now</button>
+          
+        </form>
+            
+    </div>
+    
+    </div>
+  </div>
+  </div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+

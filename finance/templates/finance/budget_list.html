@@ -1,0 +1,49 @@
+{% extends 'finance/base.html' %}
+{% block content %}
+<div class='row' style='margin-top:5px'>
+  <div class='col-md-3'>
+    {% include 'finance/sidebar.html' %}
+  </div>
+  <div class='col-md-8'>
+    <div class='card card-body' style='margin-right:30px;'>
+      <div >
+        <a href="{% url 'create-budget' %}" class='btn btn-success' style='float:right'>Create Budget</a></div>
+      <h4>List of Budgets</h4>
+    <table class="table table-hover ">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Amount</th>
+          <th>Remaining</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Expenses</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      {% for budget in budgets %}
+        
+      <tbody>
+        <tr>
+           <td>{{ budget.name }} </td>
+           <td>{{ budget.amount }}</td> 
+           <td>{{ budget.remaining }}</td> 
+           <td>{{ budget.start_date }}</td>
+           <td>{{ budget.end_date }}</td>  
+           <td><a href="" class=" "> Expense</a></td>
+           <td>
+            <a href="" class="btn btn-primary btn-sm"> Update</a>
+            <a href="{% url 'delete-budget' budget.id %}" class="btn btn-danger btn-sm"> Delete</a>
+
+            </td>
+        </tr>
+      </tbody>
+      {% endfor %}
+
+     </table>
+    </div>
+  </div>
+  </div>
+
+{% endblock %}

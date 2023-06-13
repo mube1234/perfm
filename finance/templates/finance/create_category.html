@@ -1,0 +1,19 @@
+{% extends 'finance/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class='row' style='margin-top:5px'>
+  <div class='col-md-3'>
+    {% include 'finance/sidebar.html' %}
+  </div>
+  <div class='col-md-7'>
+    <div class='card card-body'>
+      <h4>Create New Category</h4>
+      <form method="POST" action="{% url 'create_category' %}">
+          {% csrf_token %}
+          {{ form|crispy }} <br>
+        <button type="submit" class=" btn btn-primary">Create</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

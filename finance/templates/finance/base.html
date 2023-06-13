@@ -1,0 +1,113 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <title>PerFM</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
+      <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+      <script src="{% static 'js/main.js' %}"></script>
+      
+
+    </head>
+</head>
+<body style='background:#f2f2f2;'>
+  <header>
+  
+    <!-- Add your navigation menu or header content here -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-transparent">
+      <div class="container-fluid">
+        <a href="{% url 'index' %}">
+              <img
+                src="{% static 'images/logo.png' %}"
+                alt="PerFM Logo"
+                style="width: 50px; height: 50px"
+                class="brand-image img-circle elevation-3"
+            />
+          </a> <p style='color:white;font-size:20px;font-family:Verdana, Arial, sans-serif'>Personal Finance Manager</p>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
+            <li class="nav-item px-2">
+              <a href="{% url 'index' %}" class="nav-link ">Home</a>
+            </li>
+            <li class="nav-item px-2">
+              <a class="nav-link" href="#about">About Us</a>
+            </li>
+            <li class="nav-item px-2">
+              <a class="nav-link" href="#how_it_work">How it works</a>
+            </li>
+            <li class="nav-item px-2">
+              <a class="nav-link" href="#">Resources</a>
+            </li>
+            <li class="nav-item px-2">
+              <a class="nav-link" href="#">Contact Us</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item px-2">
+              <a class="nav-link" href="{% url 'dashboard' %}">Dashbaord</a>
+            </li>
+            {% endif %}
+            {% if not  user.is_authenticated %}
+            <li class="nav-item px-2">
+              <a href="{% url 'login' %}" class="btn btn-success" href="#">Login</a>
+            </li>
+            <li class="nav-item px-2">
+              <a href="{% url 'register' %}" class="btn btn-primary" href="#">Register</a>
+            </li>
+            {% endif %}
+            {% comment %} 
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+              </ul>
+            </li> {% endcomment %}
+          
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    {% block content %}
+    <!-- The content block will be overridden in child templates -->
+    {% endblock %}
+  </main>
+
+<!-- for display messages -->
+<!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+ {# delete confirmation #}
+<script>
+  $(document).ready(function () {
+
+    $(".delete-category").click(function () {
+      return confirm("Are you sure to delete this category?");
+    });
+    $(".delete-expenses").click(function () { 
+      return confirm("Are you sure to delete this expense?");
+    });
+    $(".delete-users").click(function () { 
+      return confirm("Are you sure to delete this user?");
+    });
+  });
+</script>
+{% include 'finance/message.html' %}
+
+</body>
+</html>

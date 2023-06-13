@@ -1,0 +1,45 @@
+{% extends 'finance/base.html' %}
+{% block content %}
+<div class='row' style='margin-top:5px'>
+  <div class='col-md-3'>
+    {% include 'finance/sidebar.html' %}
+  </div>
+  <div class='col-md-8'>
+    <div class='card card-body' style='margin-right:30px;'>
+      <div >
+        <a href="{% url 'add_expense' %}" class='btn btn-success' style='float:right'>Add Expense</a></div>
+      <h4>Your Expenses</h4>
+    <table class="table table-hover ">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Total Expense</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      {% for expense in expenses %}
+        
+      <tbody>
+        <tr>
+           <td>{{ expense.title }} </td>
+           <td>{{ expense.amount }}</td> 
+           <td>{{ expense.date }}</td>
+           <td>{{ expense.total_expense }}</td>
+           <td>
+            <a href="" class=" "> Update</a>
+            <a href="{% url 'delete-expenses' expense.id %}" class="delete-expenses"> Delete</a>
+
+            </td>
+        </tr>
+      </tbody>
+      {% endfor %}
+
+     </table>
+    </div>
+  </div>
+  </div>
+
+{% endblock %}

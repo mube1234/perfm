@@ -1,0 +1,41 @@
+{% extends 'finance/base.html' %}
+{% block content %}
+<div class='row' style='margin-top:5px'>
+  <div class='col-md-3'>
+    {% include 'finance/sidebar.html' %}
+  </div>
+  <div class='col-md-8'>
+    <div class='card card-body' style='margin-right:30px;'>
+      <div >
+        <a href="{% url 'create_category' %}" class='btn btn-success' style='float:right'>Add Category</a></div>
+      <h4>Category List</h4>
+    <table class="table table-hover text-nowrap table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Actioin</th>
+        </tr>
+      </thead>
+
+      {% for category in categories %}
+        
+      <tbody>
+        <tr>
+           <td>{{ category.name }}</td>
+           <td>{{ category.description }}</td> 
+           <td>
+            <a href="" class=" btn btn-primary btn-sm"> Update</a>
+            <a class="delete-category btn btn-danger btn-sm" href="{% url 'delete-category' category.id %}" > Delete</a>
+
+            </td>
+        </tr>
+      </tbody>
+      {% endfor %}
+
+     </table>
+    </div>
+  </div>
+  </div>
+
+{% endblock %}

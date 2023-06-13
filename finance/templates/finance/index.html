@@ -1,0 +1,92 @@
+{% extends 'finance/base.html' %}
+{% load static %}
+{% block content %}
+<div class="body">
+    <div class="image-container">
+      <img src="{% static 'images/hommee.png' %}" alt="Image">
+      <div class="image-overlay">
+        <h1 class="image-text">Take Charge of Your Finances</h1>
+        <p style='margin-top:20px;'>Achieve Financial Freedom</p>
+        {% if not  user.is_authenticated %}
+        <a href="{% url 'register' %}" class="image-button">Get Started</a>
+        {% else %}
+        <a href="{% url 'dashboard' %}" class="btn btn-info" style='padding:8px 16px;font-size:17px;'>Access Dashboard</a>
+        {% endif %}
+      </div>
+    </div>
+ <div class='container'>
+  {% comment %} section about {% endcomment %}
+   <section class='about' id='about'>
+      <center><h1 style='color:#004499;margin-top:50px;'>About Us</h1>
+        <hr style='border:2px solid black;width:200px;'>
+      </center>
+      <div class='row'>
+        <div class='col-md-5'>
+          <img
+          src="{% static 'images/logo.png' %}"
+          alt="AstPerFM Logo"
+          style="width: 90%; height:auto;"
+          class="brand-image img-circle elevation-3"
+      />
+        </div>
+        <div class='col-md-7' style='margin-top:50px;'>
+          <p style='line-height:1.8'>At <strong>PerFM</strong>, we offer a revolutionary personal finance management system that empowers individuals to take control of their financial well-being. Our comprehensive platform simplifies budgeting, expense tracking, and goal setting, giving you the tools to achieve your financial goals. </p>
+          <p style='line-height:1.8'>With personalized guidance from our team of experts, we provide the support and strategies you need to make informed financial decisions. Join us on this transformative journey and unlock your financial potential with our reliable and intuitive service. Take control of your finances and embark on a brighter financial future with PerFM. <a href="{% url 'about' %}"  >Read more</a></p>
+          
+          {% if not  user.is_authenticated %}
+          <button class='btn btn-primary' style='width:150px;float:right'>Sign Up</button>
+          {% endif %}
+        </div>
+      </div>
+   </section>
+  </div> 
+     {% comment %} section how it works {% endcomment %}
+     <section class='how_it_work' id='how_it_work' style='background:#fff'>
+      <center><h1 style='color:#004499;margin-top:10px;'>How it works</h1>
+        <hr style='border:2px solid black;width:250px;'></center>
+      <div class='container'>
+      <div class='row' style='margin-top:50px'>
+          <div class='col-md-3'>
+            <div class='card card-body'>
+             
+                <img src="{% static 'icons/adduser.png' %}" alt="Image" style='width:96px;height:96px;'><br>
+      
+                  <h4>Create Account</h4>
+               
+                  <p>Sign up and create your personal finance manager
+                     account to get started on your financial journey.</p>
+            </div>
+          </div>
+
+          <div class='col-md-3' >
+            <div class='card card-body'>
+              <img src="{% static 'icons/planning.png' %}" alt="Image" style='width:96px;height:96px;'><br>
+        
+            <h4>Track and Organize</h4>
+            <p>Easily manage and categorize your financial transactions in one place, 
+              gaining a clear overview of your income and expenses.</p>
+            </div>
+         </div>
+          <div class='col-md-3' >
+            <div class='card card-body'>
+              <img src="{% static 'icons/budgeting.png' %}" alt="Image" style='width:96px;height:96px;'><br>
+            <h4>Budget and Plan</h4>
+                  <p>Set budgets, financial goals, and analyze
+                     spending patterns to save money and allocate funds towards your goals.</p>
+            </div>
+          </div>
+        <div class='col-md-3' >
+          <div class='card card-body'>
+            <img src="{% static 'icons/track.png' %}" alt="Image" style='width:96px;height:96px;'><br>
+          <h4>Real-Time Insights</h4>
+          <p>tay informed with real-time visualizations and 
+            reports that show spending trends, income sources, and progress towards goals.</p>
+          </div>
+        </div>
+      </div>
+    </div>  
+   </section>
+ 
+{% endblock %}
+
+

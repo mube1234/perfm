@@ -1,0 +1,50 @@
+{% extends 'finance/base.html' %}
+{% block content %}
+<div class='row' style='margin-top:5px'>
+  <div class='col-md-3'>
+    {% include 'finance/sidebar.html' %}
+  </div>
+  <div class='col-md-8'>
+    <div class='card card-body' style='margin-right:30px;'>
+      <div >
+        <a href="{% url 'add_debt' %}" class='btn btn-success' style='float:right'>Register Debt</a>
+    
+    </div>
+      <h4>All Debts Related to You</h4>
+    <table class="table table-hover ">
+      <thead>
+        <tr>
+          <th>From</th>
+          <th>Amount</th>
+          <th>Taken Date</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      {% for debt in debts %}
+        
+      <tbody>
+        <tr>
+           <td>{{ debt.taken_from }} </td>
+           <td>{{ debt.amount }}</td> 
+           <td>{{ debt.taken_date }}</td>
+           <td>{{ debt.status }}</td>
+           <td>
+            {% if debt.status == 'Not Paid' %}
+                <a href="{% url 'edit_debt_status' debt.id %}" class=" btn btn-warning btn-sm"> Pay Now</a>
+            {% else %}
+            <a href="#" class=" btn btn-success btn-sm">Just Paid </a>
+            {% endif %}
+            </td>
+        </tr>
+      </tbody>
+      {% endfor %}
+
+     </table>
+     <h6 style='text-align:right'>Total Debt: <i style='color:red'>{{total_debt}}</i></h6>
+    </div>
+  </div>
+  </div>
+
+{% endblock %}

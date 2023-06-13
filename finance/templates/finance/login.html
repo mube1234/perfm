@@ -1,0 +1,37 @@
+
+{% extends 'finance/base.html' %}
+{% block content %}
+    <div class="container col-md-4 mt-5">
+        <div class='card'>
+            <div class='card-header'>
+            <h3><center>Login</center></h3>
+            </div>
+            <div class='card-body'>
+        <form method="POST">
+            {% csrf_token %}
+            {% if messages %}
+            <center>
+              <section style="color: #dc3545 ;margin-top: .25rem;margin-bottom: 1rem;">
+                 {% for message in messages %}
+                   <strong>{{message}}</strong>
+                 {% endfor %}
+               </section> 
+             </center>  
+           {% endif %}
+            <!-- Your form fields here -->
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control mt-2" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control mt-2" id="password" name="password" required>
+            </div><br>
+            <button type="submit" class="btn btn-primary">Login</button>
+           
+            &nbsp;&nbsp; <small>Didn't have account yet? </small> <a href="{% url 'register' %}"  type="submit" class="btn btn-success">Create Account</a>
+        </form>
+        </div>  
+    </div> 
+    </div>
+    {% endblock %}

@@ -1,0 +1,36 @@
+{% load static %}
+<div class='card'>
+    <div class='card-header' style='background:#003355 ;color:white'>
+        <h4>Finance Management</h4>
+        <p style='float:right'>{{user.username}}</p>
+    </div>
+    <div class='card-body' style='background:#003399;height:550px;'>
+        <nav class="navbar">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+              data-accordion="false" style='padding-left:10px;'>
+             
+        <li  class="nav-item "><a href="" class="nav-link sidebar"   href="#" >Dashboard</a></li>
+        <li  class="nav-item "><a href="" class="nav-link sidebar"  href="#">Income</a></li>
+        <li  class="nav-item"> <a href="{% url 'category' %}" class="nav-link sidebar"  href="#">Category</a></li>
+        <li  class="nav-item"><a href="{% url 'budget' %}" class="nav-link sidebar"  href="#">Budget</a></li>
+        <li  class="nav-item"><a href="{% url 'expense' %}" class="nav-link sidebar"  href="#">Expense</a></li>
+        <li  class="nav-item"><a href="" class="nav-link sidebar"  href="#">Plan</a></li>
+        <li  class="nav-item"><a href="{% url 'debt' %}" class="nav-link sidebar" >Debt</a></li>
+        <li  class="nav-item"><a href="{% url 'users' %}" class="nav-link sidebar" >User Management</a></li>
+      
+        
+            <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle sidebar" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Account
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="#">Profile</a></li>
+                      <li><a class="dropdown-item" href="#">Change Password</a></li>
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                  </li>
+        <ul>
+            <nav>
+    </div>
+</div>
