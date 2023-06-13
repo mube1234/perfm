@@ -8,6 +8,13 @@
   <div class='col-md-7'>
     <div class='card card-body'>
       <h4>Create New Category</h4>
+      <div class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <label for="exampleColorInput" class="form-label">Choose Color</label>
+<input type="color" class="form-control form-control-color" id="exampleColorInput" value="#563d7c" title="Choose your color">
       <form method="POST" action="{% url 'create_category' %}">
           {% csrf_token %}
           {{ form|crispy }} <br>

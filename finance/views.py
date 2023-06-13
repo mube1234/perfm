@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .decorators import unauthenticated_user
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.contrib.auth.decorators import login_required
 @unauthenticated_user
 def register(request):
     if request.method == 'POST':
@@ -34,6 +34,15 @@ def signin(request):
 
     return render(request, 'finance/login.html')
 
+@login_required(login_url='login')
+def dashboard(request):
+    category=Category.objects.all()
+    budget=Budget.objects.all()
+    debt=Debt.objects.filter(status='Not Paid')
+    expense=Expense.objects.all()
+    context={'category':category,'budget':budget,'debt':debt,'expense':expense}
+    return render(request, 'finance/dashboard.html',context)
+    
 
 def index(request):
     return render(request, 'finance/index.html')
@@ -41,33 +50,36 @@ def index(request):
 def about(request):
     return render(request, 'finance/about.html')
 
+@login_required(login_url='login')
 def user_management(request):
     users = CustomUser.objects.all()
     return render(request, 'finance/user_management.html',{'users': users})
 
+
 # delete user
+@login_required(login_url='login')
 def delete_users(request, id):
     users = get_object_or_404(CustomUser, id=id)
     users.delete()
     messages.success(request, 'Users deleted Successfully!')
     return redirect('users')
 
-def dashboard(request):
-    return render(request, 'finance/dashboard.html')
-
-
+@login_required(login_url='login')
 def category_list(request):
     categories = Category.objects.all()
     return render(request, 'finance/category_list.html', {'categories': categories})
 
+@login_required(login_url='login')
 def budget_list(request):
     budgets = Budget.objects.all()
     return render(request, 'finance/budget_list.html', {'budgets': budgets})
 
+@login_required(login_url='login')
 def expense_list(request):
     expenses = Expense.objects.all()
     return render(request, 'finance/expense_list.html', {'expenses': expenses})
 
+@login_required(login_url='login')
 def all_debt(request):
     debts = Debt.objects.all()
     total_debts = Debt.objects.filter(status='Not Paid')
@@ -76,6 +88,7 @@ def all_debt(request):
     return render(request, 'finance/debt_list.html', {'debts': debts,'total_debt': total_debt})
 
 # create budget
+@login_required(login_url='login')
 def create_budget(request):
     if request.method == 'POST':
         form = BudgetForm(request.POST)
@@ -89,6 +102,7 @@ def create_budget(request):
     return render(request, 'finance/create_budget.html', {'form': form})
 
 # delete budget
+@login_required(login_url='login')
 def delete_budget(request, id):
     bud = get_object_or_404(Budget, id=id)
     bud.delete()
@@ -96,6 +110,7 @@ def delete_budget(request, id):
     return redirect('budget')
 
 # add expense
+@login_required(login_url='login')
 def add_expense(request):
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
@@ -127,6 +142,7 @@ def add_expense(request):
     return render(request, 'finance/add_expense.html', {'form': form})
 
 # delete expense
+@login_required(login_url='login')
 def delete_expenses(request, id):
     exp = get_object_or_404(Expense, id=id)
     exp.delete()
@@ -134,6 +150,7 @@ def delete_expenses(request, id):
     return redirect('expense')
 
 # add category
+@login_required(login_url='login')
 def create_category(request):
     if request.method == 'POST':
         form = CategoryForm(request.POST)
@@ -147,6 +164,7 @@ def create_category(request):
     return render(request, 'finance/create_category.html', {'form': form})
 
 # add debt
+@login_required(login_url='login')
 def add_debt(request):
     if request.method == 'POST':
         form = DebtForm(request.POST)
@@ -159,7 +177,7 @@ def add_debt(request):
     
     return render(request, 'finance/add_debt.html', {'form': form})
 
-
+@login_required(login_url='login')
 def edit_debt_status(request, id):
     debt = get_object_or_404(Debt, id=id)
     if request.method == 'POST':
@@ -184,6 +202,7 @@ def user_logout(request):
     logout(request)
     return redirect('index')
 
+@login_required(login_url='login')
 def delete_category(request, id):
     cat = get_object_or_404(Category, id=id)
     cat.delete()
