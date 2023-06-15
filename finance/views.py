@@ -80,6 +80,13 @@ def expense_list(request):
     return render(request, 'finance/expense_list.html', {'expenses': expenses})
 
 @login_required(login_url='login')
+def income_list(request):
+    incomes = Income.objects.all()
+    total_income = sum(float(inc.amount) for inc in incomes)
+    return render(request, 'finance/income_list.html', {'incomes': incomes,'total_income':total_income})
+
+
+@login_required(login_url='login')
 def all_debt(request):
     debts = Debt.objects.all()
     total_debts = Debt.objects.filter(status='Not Paid')
@@ -162,6 +169,23 @@ def create_category(request):
         form = CategoryForm()
     
     return render(request, 'finance/create_category.html', {'form': form})
+
+# add income
+@login_required(login_url='login')
+def add_income(request):
+    if request.method == 'POST':
+        form = IncomeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Income registered Successfully!')
+            return redirect('income')
+        else:
+            print('error')
+    else:
+        form = IncomeForm()
+    
+    return render(request, 'finance/add_income.html', {'form': form})
+
 
 # add debt
 @login_required(login_url='login')

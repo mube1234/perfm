@@ -73,3 +73,23 @@ class Expense(models.Model):
     def __str__(self):
         return self.title
 
+class Income(models.Model):
+    terms = (
+        ('Daily', 'Daily'),
+        ('Weekly', 'Weekly'),
+        ('Monthly', 'Monthly'),
+    )
+    income_no=models.IntegerField(unique=True)
+    source = models.CharField(max_length=100)
+    amount = models.CharField(max_length=50)
+    total_income=models.CharField(max_length=50,default=None)
+    term = models.CharField(max_length=200, choices=terms, default='Monthly')
+    
+
+    def save(self, *args, **kwargs):
+        if self.total_income is None:
+            self.total_income=self.amount
+            super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.income_no

@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Expense,Category, CustomUser,Budget, Debt
+from .models import *
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 
@@ -43,3 +43,9 @@ class DebtEditForm(forms.ModelForm):
         widgets = {
             'status': forms.TextInput(attrs={'type': 'hidden'}),
         }
+class IncomeForm(forms.ModelForm):
+    class Meta:
+        model = Income
+        fields = '__all__'
+        fields = ('income_no', 'source', 'amount', 'term')
+        

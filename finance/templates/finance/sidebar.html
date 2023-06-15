@@ -9,19 +9,20 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
               data-accordion="false" style='padding-left:10px;'>
              
-        <li  class="nav-item "><a href="{% url 'dashboard' %}" class="nav-link sidebar"   href="#" >Dashboard</a></li>
-        <li  class="nav-item "><a href="" class="nav-link sidebar"  href="#">Income</a></li>
-        <li  class="nav-item"> <a href="{% url 'category' %}" class="nav-link sidebar"  href="#">Category</a></li>
-        <li  class="nav-item"><a href="{% url 'budget' %}" class="nav-link sidebar"  href="#">Budget</a></li>
-        <li  class="nav-item"><a href="{% url 'expense' %}" class="nav-link sidebar"  href="#">Expense</a></li>
-        <li  class="nav-item"><a href="" class="nav-link sidebar"  href="#">Plan</a></li>
-        <li  class="nav-item"><a href="{% url 'debt' %}" class="nav-link sidebar" >Debt</a></li>
-        <li  class="nav-item"><a href="{% url 'users' %}" class="nav-link sidebar" >User Management</a></li>
-      
+        <li  class="nav-item "><a href="{% url 'dashboard' %}" class="nav-link sidebar"   href="#" ><i class="bi-speedometer2" style='color:#e3e3e3;'></i>&nbsp;&nbsp;  Dashboard</a></li>
+        <li  class="nav-item "><a href="{% url 'income' %}" class="nav-link sidebar"  ><i class="bi-coin " style='color:#e3e3e3'></i>&nbsp;&nbsp; Income</a></li>
+        <li  class="nav-item"> <a href="{% url 'category' %}" class="nav-link sidebar"  href="#"><i class="bi-card-list " style='color:#e3e3e3'></i>&nbsp;&nbsp; Category</a></li>
+        <li  class="nav-item"><a href="{% url 'budget' %}" class="nav-link sidebar"  href="#"><i class="bi-cash-coin " style='color:#e3e3e3'></i>&nbsp;&nbsp; Budget</a></li>
+        <li  class="nav-item"><a href="{% url 'expense' %}" class="nav-link sidebar"  href="#"><i class="bi-cart-plus " style='color:#e3e3e3'></i>&nbsp;&nbsp; Expense</a></li>
+        <li  class="nav-item"><a href="" class="nav-link sidebar"  href="#"><i class="bi-signpost-2 " style='color:#e3e3e3'></i>&nbsp;&nbsp; Plan</a></li>
+        <li  class="nav-item"><a href="{% url 'debt' %}" class="nav-link sidebar" ><i class="bi-bag-dash " style='color:#e3e3e3'></i>&nbsp;&nbsp; Debt</a></li>
+        {% if not user.is_staff %}
+        <li  class="nav-item"><a href="{% url 'users' %}" class="nav-link sidebar" ><i class="bi-person-gear " style='color:#e3e3e3'></i>&nbsp;&nbsp; User Management</a></li>
+        {% endif %}
         
             <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle sidebar" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Account
+                      <i class="bi-person" style='color:#e3e3e3'></i>&nbsp;&nbsp; Account
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <li><a class="dropdown-item" href="#">Profile</a></li>

@@ -79,6 +79,7 @@ h1 {
   }
   .sidebar:hover {
     color: #ff0202; /* Set the hover color of the sidebar links */
+    background-color: black;
   }
   
 .sidebar{
