@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 import crispy_forms
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -88,6 +89,12 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+DATABASES={
+    'default':dj_database_url.parse(os.environ.get("DATABASE_URL"))
+}
+
+
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -138,7 +145,7 @@ USE_TZ = True
 
 
 
-MEDIA_URL = '/images/'
+
 
 CRISPY_TEMPLATE_PACK='bootstrap4'
 
@@ -150,7 +157,7 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'images')
 
 
 
-
+MEDIA_URL = '/images/'
 STATIC_URL = 'static/'
 
 # Default primary key field type

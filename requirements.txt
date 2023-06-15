@@ -1,0 +1,13 @@
+asgiref==3.7.2
+beautifulsoup4==4.12.2
+crispy-bootstrap4==2022.1
+dj-database-url==2.0.0
+Django==4.2.2
+django-bootstrap4==23.1
+django-crispy-forms==2.0
+gunicorn==20.1.0
+psycopg2==2.9.6
+soupsieve==2.4.1
+sqlparse==0.4.4
+typing_extensions==4.6.3
+tzdata==2023.3
