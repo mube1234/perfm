@@ -1,22 +1,27 @@
-
-
 .image-container {
-    position: relative;
-    display: inline-block;
-
+  position: relative;
+  width: 100%;
+  height: auto;
+  padding-bottom: 38%; /* Maintain aspect ratio (16:9) */
 }
 
-.text-container {
-    position: absolute;
-    top: 37%;
-    left: 37%;
-    transform: translate(-37%, -37%);
+.image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(50%);
 }
 
-h1 {
-    color: white;
-    font-size: 50px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+.image-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
 }
 
 .image-text {
@@ -24,74 +29,50 @@ h1 {
   font-weight: bold;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
-.image-container {
-    position: relative;
-    width: 100%;
-    height: auto;
-    padding-bottom: 38%; /* Maintain aspect ratio (16:9) */
-  }
-  
-  .image-container img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(50%);
-  }
-  
-  .image-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    color: white;
-  }
-  
-  .image-text {
-    font-size: 50px;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  }
-  .image-button {
-    display: inline-block;
-    width: 170px;
-    padding: 12px 30px;
-    background-color: #007bff; /* Primary color */
-    color: #ffffff;
-    text-decoration: none;
-    border-radius: 30px; /* Border radius */
-    font-size: 20px;
-    margin-top: 16px;
-    border: 2px solid #007bff; /* Border width and color */
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-  }
-  
-  .image-button:hover {
-    background-color: #0056b3; /* Darker shade of primary color */
-    border-color: #0056b3; /* Darker shade of primary color */
-  }
-  
 
-  
-  .navbar-transparent .navbar-nav .nav-link {
-    color: #ffffff; /* Set the color of the navbar links */
-  }
-
-  .navbar-transparent .navbar-nav .nav-link:hover{
-    color: #ff0202; /* Set the color of the navbar links */
-  }
-  .sidebar:hover {
-    color: #ff0202; /* Set the hover color of the sidebar links */
-    background-color: black;
-  }
-  
-.sidebar{
-  color:white;
+.image-button {
+  display: inline-block;
+  width: 170px;
+  padding: 12px 30px;
+  background-color: #007bff; /* Primary color */
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 30px; /* Border radius */
+  font-size: 20px;
+  margin-top: 16px;
+  border: 2px solid #007bff; /* Border width and color */
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
-  
 
-  /* sidebar */
-  
+.image-button:hover {
+  background-color: #0056b3; /* Darker shade of primary color */
+  border-color: #0056b3; /* Darker shade of primary color */
+}
+
+.navbar-transparent .navbar-nav .nav-link {
+  color: #ffffff; /* Set the color of the navbar links */
+}
+
+.navbar-transparent .navbar-nav .nav-link:hover {
+  color: #ff0202; /* Set the hover color of the navbar links */
+}
+
+.sidebar {
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .image-container {
+      padding-bottom: 75%; /* Adjust the aspect ratio for small devices */
+  }
+
+  .image-text {
+      font-size: 30px; /* Reduce the font size for small devices */
+  }
+
+  .image-button {
+      width: 130px; /* Reduce the width for small devices */
+      font-size: 16px; /* Reduce the font size for small devices */
+      margin-top: 10px; /* Adjust the margin for small devices */
+  }
+}
