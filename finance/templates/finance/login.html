@@ -10,11 +10,16 @@
         <form method="POST">
             {% csrf_token %}
             {% if messages %}
+            
             <center>
               <section style="color: #dc3545 ;margin-top: .25rem;margin-bottom: 1rem;">
-                 {% for message in messages %}
-                   <strong>{{message}}</strong>
-                 {% endfor %}
+                {% for message in messages %}
+                  {% if message.tags %}
+                    {% if 'error' in message.tags %}
+                      <strong>{{message}}</strong>
+                    {% endif %}
+                 {% endif %}
+                {% endfor %}
                </section> 
              </center>  
            {% endif %}

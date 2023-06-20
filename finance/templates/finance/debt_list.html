@@ -36,7 +36,10 @@
             {% else %}
             <a href="#" class=" btn btn-success btn-sm">Just Paid </a>
             {% endif %}
+            <a href="{% url 'delete-debt' debt.id %}" class=" btn btn-danger btn-sm">Delete </a>
+           
             </td>
+            
         </tr>
       </tbody>
       {% endfor %}

@@ -1,28 +1,12 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import Group as AuthGroup
 from django.db import models
-
-class CustomUser(AbstractUser):
-    first_name = models.CharField(max_length=150)
-    last_name = models.CharField(max_length=150)
-    role = models.CharField(default='customer')
-    user_permissions = models.ManyToManyField(
-    'auth.Permission', verbose_name='user permissions',blank=True,related_name='customuser_set',
-    help_text='The permissions this user has',related_query_name='user',)
-    groups = models.ManyToManyField(
-        AuthGroup,
-        verbose_name='groups',
-        blank=True,
-        help_text='The groups this user belongs to',
-        related_name='customuser_set',
-        related_query_name='user',
-    )
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
-    
-
+    created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.name
     
@@ -31,21 +15,25 @@ class Debt(models.Model):
         ('Not Paid', 'Not Paid'),
         ('Paid', 'Paid'),
     )
+    owner = models.ForeignKey(User, on_delete=models.CASCADE) 
     taken_from = models.CharField(max_length=50)
     amount = models.CharField(max_length=50)
     taken_date=models.DateField()
     status = models.CharField(max_length=200, choices=STATUS, default='Not Paid')
+    created_at = models.DateTimeField(auto_now_add=True)
     
 
     def __str__(self):
         return self.taken_from    
 
 class Budget(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE) 
     name = models.CharField(max_length=50)
     amount = models.CharField(max_length=50)
     remaining=models.CharField(max_length=50,default=None)
     start_date = models.DateField()
     end_date = models.DateField()
+    created_at = models.DateTimeField(auto_now_add=True)
     def save(self, *args, **kwargs):
         if self.remaining is None:
             self.remaining=self.amount
@@ -58,13 +46,14 @@ class Budget(models.Model):
         return self.name
 
 class Expense(models.Model):
+    owner = models.ForeignKey(User, on_delete=models.CASCADE) 
     title = models.CharField(max_length=100)
     amount = models.CharField(max_length=50)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     budget = models.ForeignKey(Budget, on_delete=models.CASCADE,null='True')
     total_expense=models.CharField(max_length=50,default=None)
     date = models.DateField()
-
+    created_at = models.DateTimeField(auto_now_add=True)
     def save(self, *args, **kwargs):
         if self.total_expense is None:
             self.total_expense=self.amount
@@ -79,12 +68,13 @@ class Income(models.Model):
         ('Weekly', 'Weekly'),
         ('Monthly', 'Monthly'),
     )
+    owner = models.ForeignKey(User, on_delete=models.CASCADE) 
     income_no=models.IntegerField(unique=True)
     source = models.CharField(max_length=100)
     amount = models.CharField(max_length=50)
     total_income=models.CharField(max_length=50,default=None)
     term = models.CharField(max_length=200, choices=terms, default='Monthly')
-    
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
         if self.total_income is None:

@@ -6,17 +6,31 @@ from django.contrib import messages
 from .decorators import unauthenticated_user
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+
 @unauthenticated_user
 def register(request):
     if request.method == 'POST':
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Account Created Successfully')
-            return redirect('index')
+            username = form.cleaned_data['username']
+            email = form.cleaned_data['email']
+
+            # Check if username is already taken
+            if User.objects.filter(username=username).exists():
+                form.add_error('username', 'Username is already taken.')
+            # Check if email is already registered
+            if User.objects.filter(email=email).exists():
+                form.add_error('email', 'Email is already registered.')
+
+            if not form.errors:
+                form.save()
+                messages.success(request, 'Account Created Successfully')
+                return redirect('login')
+
     else:
         form = RegistrationForm()
     return render(request, 'finance/registration.html', {'form': form})
+    
 
 @unauthenticated_user
 def signin(request):
@@ -30,7 +44,7 @@ def signin(request):
             return redirect('index')
         else:
             # Invalid credentials, show error message
-            messages.info(request, 'Incorrect username or password!')
+            messages.error(request, 'Incorrect username or password!')
 
     return render(request, 'finance/login.html')
 
@@ -52,17 +66,49 @@ def about(request):
 
 @login_required(login_url='login')
 def user_management(request):
-    users = CustomUser.objects.all()
+    users = User.objects.filter(is_superuser=False)  # Exclude superusers
     return render(request, 'finance/user_management.html',{'users': users})
 
 
 # delete user
 @login_required(login_url='login')
 def delete_users(request, id):
-    users = get_object_or_404(CustomUser, id=id)
+    users = get_object_or_404(User, id=id)
     users.delete()
     messages.success(request, 'Users deleted Successfully!')
     return redirect('users')
+
+# delete debt
+@login_required(login_url='login')
+def delete_debt(request, id):
+    debt = get_object_or_404(Debt, id=id)
+    debt.delete()
+    messages.success(request, 'Debt deleted Successfully!')
+    return redirect('debt')
+
+# delete income
+@login_required(login_url='login')
+def delete_income(request, id):
+    income = get_object_or_404(Income, id=id)
+    income.delete()
+    messages.success(request, 'Income deleted Successfully!')
+    return redirect('income')
+
+# delete budget
+@login_required(login_url='login')
+def delete_budget(request, id):
+    bud = get_object_or_404(Budget, id=id)
+    bud.delete()
+    messages.success(request, 'Budget deleted Successfully!')
+    return redirect('budget')
+
+# delete expense
+@login_required(login_url='login')
+def delete_expenses(request, id):
+    exp = get_object_or_404(Expense, id=id)
+    exp.delete()
+    messages.success(request, 'Expense deleted Successfully!')
+    return redirect('expense')
 
 @login_required(login_url='login')
 def category_list(request):
@@ -71,17 +117,18 @@ def category_list(request):
 
 @login_required(login_url='login')
 def budget_list(request):
-    budgets = Budget.objects.all()
-    return render(request, 'finance/budget_list.html', {'budgets': budgets})
+    budgets = Budget.objects.filter(owner=request.user).order_by("-created_at")
+    budget_count = budgets.count()
+    return render(request, 'finance/budget_list.html', {'budgets': budgets,'budget_count':budget_count})
 
 @login_required(login_url='login')
 def expense_list(request):
-    expenses = Expense.objects.all()
+    expenses = Expense.objects.filter(owner=request.user).order_by("-created_at")
     return render(request, 'finance/expense_list.html', {'expenses': expenses})
 
 @login_required(login_url='login')
 def income_list(request):
-    incomes = Income.objects.all()
+    incomes = Income.objects.filter(owner=request.user).order_by("-created_at")
     total_income = sum(float(inc.amount) for inc in incomes)
     return render(request, 'finance/income_list.html', {'incomes': incomes,'total_income':total_income})
 
@@ -100,7 +147,9 @@ def create_budget(request):
     if request.method == 'POST':
         form = BudgetForm(request.POST)
         if form.is_valid():
-            form.save()
+            obj=form.save(commit =False)
+            obj.owner=request.user
+            obj.save()
             messages.success(request, 'Budget created Successfully!')
             return redirect('budget')
     else:
@@ -108,13 +157,7 @@ def create_budget(request):
     
     return render(request, 'finance/create_budget.html', {'form': form})
 
-# delete budget
-@login_required(login_url='login')
-def delete_budget(request, id):
-    bud = get_object_or_404(Budget, id=id)
-    bud.delete()
-    messages.success(request, 'Budget deleted Successfully!')
-    return redirect('budget')
+
 
 # add expense
 @login_required(login_url='login')
@@ -130,17 +173,13 @@ def add_expense(request):
            
             if budget_remaining > expense_amount:
                 expense=form.save(commit=False)
-                # total_expense=Expense.objects.get(amount=ama).total_expense
-                # total_expenses= int(expense_amount) + int(total_expense)
-                # Expense.objects.filter(budget=budget_id).update(total_expense=total_expenses)
-                
+                expense.owner=request.user
                 budget_remaining= int(budget_remaining) - int(expense_amount)
                 Budget.objects.filter(name=budget_id).update(remaining=budget_remaining)
                 expense.save()
                 messages.success(request, 'Expense registered Successfully!')
                 return redirect('expense')
             else:
-                print('eorror')
                 messages.warning(request, 'You dont have enough budget')
                 return redirect('add_expense')
     else:
@@ -148,13 +187,7 @@ def add_expense(request):
     
     return render(request, 'finance/add_expense.html', {'form': form})
 
-# delete expense
-@login_required(login_url='login')
-def delete_expenses(request, id):
-    exp = get_object_or_404(Expense, id=id)
-    exp.delete()
-    messages.success(request, 'Expense deleted Successfully!')
-    return redirect('expense')
+
 
 # add category
 @login_required(login_url='login')
@@ -176,7 +209,9 @@ def add_income(request):
     if request.method == 'POST':
         form = IncomeForm(request.POST)
         if form.is_valid():
-            form.save()
+            obj=form.save(commit =False)
+            obj.owner=request.user
+            obj.save()
             messages.success(request, 'Income registered Successfully!')
             return redirect('income')
         else:
