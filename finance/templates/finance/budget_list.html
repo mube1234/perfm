@@ -34,7 +34,7 @@
            <td><a href="" class=" "> Expense</a></td>
            <td>
             <a href="" class="btn btn-primary btn-sm"> Update</a>
-            <a href="{% url 'delete-budget' budget.id %}" class="btn btn-danger btn-sm"> Delete</a>
+            <a type="button" href="{% url 'delete-budget' budget.id %}" class="btn btn-danger btn-sm" onclick="confirmDelete()"> Delete</a>
 
             </td>
         </tr>
@@ -45,5 +45,14 @@
     </div>
   </div>
   </div>
+{% comment %} to delete the budget {% endcomment %}
+  <script>
+    function confirmDelete() {
+      var confirmed = confirm("Are you sure you want to delete?");
+      if (confirmed) {
+        document.querySelector('form').submit();
+      }
+    }
+  </script>
 
 {% endblock %}

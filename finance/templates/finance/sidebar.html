@@ -25,9 +25,8 @@
                       <i class="bi-person" style='color:#e3e3e3'></i>&nbsp;&nbsp; Account
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="#">Profile</a></li>
+                      <li><a href="{% url 'profile' %}" class="dropdown-item">Profile</a></li>
                       <li><a class="dropdown-item" href="#">Change Password</a></li>
-                      <li><hr class="dropdown-divider"></li>
                       <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
                     </ul>
                   </li>

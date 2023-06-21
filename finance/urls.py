@@ -27,4 +27,5 @@ urlpatterns = [
     path('about', views.about, name='about'),
     path('income', views.income_list, name='income'),
     path('income/add', views.add_income, name='add-income'),
+    path('profile/', views.my_profile, name='profile'),
 ]

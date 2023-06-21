@@ -41,9 +41,10 @@ class BudgetForm(forms.ModelForm):
        
 
 class DebtForm(forms.ModelForm):
+    taken_date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
     class Meta:
         model = Debt
-        fields = '__all__'
+        fields = ('taken_from', 'amount', 'taken_date')
         widgets = {
 
            'status': forms.TextInput(attrs={'type': 'hidden'}),
@@ -59,6 +60,8 @@ class DebtEditForm(forms.ModelForm):
 class IncomeForm(forms.ModelForm):
     class Meta:
         model = Income
-        
-        fields = ('income_no', 'source', 'amount', 'term')
+        exclude = ('owner','total_income')
+        widgets = {
+            'identity': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
         

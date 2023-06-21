@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import Group as AuthGroup
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
@@ -9,22 +10,28 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.name
-    
-class Debt(models.Model):
-    STATUS = (
-        ('Not Paid', 'Not Paid'),
-        ('Paid', 'Paid'),
+
+class Income(models.Model):
+    terms = (
+        ('Daily', 'Daily'),
+        ('Weekly', 'Weekly'),
+        ('Monthly', 'Monthly'),
     )
-    owner = models.ForeignKey(User, on_delete=models.CASCADE) 
-    taken_from = models.CharField(max_length=50)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, default='1') 
+    identity = models.UUIDField(default=uuid.uuid4, unique=True)
+    source = models.CharField(max_length=100)
     amount = models.CharField(max_length=50)
-    taken_date=models.DateField()
-    status = models.CharField(max_length=200, choices=STATUS, default='Not Paid')
+    total_income=models.CharField(max_length=50,default=None)
+    term = models.CharField(max_length=200, choices=terms, default='Monthly')
     created_at = models.DateTimeField(auto_now_add=True)
-    
+
+    def save(self, *args, **kwargs):
+        if self.total_income is None:
+            self.total_income=self.amount
+            super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.taken_from    
+        return self.total_income 
 
 class Budget(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE) 
@@ -45,6 +52,24 @@ class Budget(models.Model):
     def __str__(self):
         return self.name
 
+class Debt(models.Model):
+    STATUS = (
+        ('Not Paid', 'Not Paid'),
+        ('Paid', 'Paid'),
+    )
+    owner = models.ForeignKey(User, on_delete=models.CASCADE) 
+    taken_from = models.CharField(max_length=50)
+    amount = models.CharField(max_length=50)
+    taken_date=models.DateField()
+    status = models.CharField(max_length=200, choices=STATUS, default='Not Paid')
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+
+    def __str__(self):
+        return self.taken_from    
+
+
+
 class Expense(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE) 
     title = models.CharField(max_length=100)
@@ -62,24 +87,3 @@ class Expense(models.Model):
     def __str__(self):
         return self.title
 
-class Income(models.Model):
-    terms = (
-        ('Daily', 'Daily'),
-        ('Weekly', 'Weekly'),
-        ('Monthly', 'Monthly'),
-    )
-    owner = models.ForeignKey(User, on_delete=models.CASCADE) 
-    income_no=models.IntegerField(unique=True)
-    source = models.CharField(max_length=100)
-    amount = models.CharField(max_length=50)
-    total_income=models.CharField(max_length=50,default=None)
-    term = models.CharField(max_length=200, choices=terms, default='Monthly')
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def save(self, *args, **kwargs):
-        if self.total_income is None:
-            self.total_income=self.amount
-            super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.income_no

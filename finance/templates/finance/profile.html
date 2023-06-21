@@ -1,0 +1,21 @@
+{% extends 'finance/base.html' %}
+{% block content %}
+<div class='row' style='margin-top:5px'>
+  <div class='col-md-3'>
+    {% include 'finance/sidebar.html' %}
+  </div>
+  <div class='col-md-8'>
+    <div class='card card-body' style='margin-right:30px;'>
+      <div >
+        <a href="#" class='btn btn-success' style='float:right'>Update Profile</a></div>
+      <h4>My Profile</h4><hr>
+      <p> <b>Username :</b> {{user.username}}</p>
+      <p> <b>Full Name :</b> {{user.get_full_name}}</p>
+      <p> <b>Email :</b> {{user.email}}</p>
+        <p> <b>Date joined :</b> {{user.date_joined}}</p>
+
+    </div>
+  </div>
+  </div>
+
+{% endblock %}

@@ -49,12 +49,29 @@ def signin(request):
     return render(request, 'finance/login.html')
 
 @login_required(login_url='login')
+def my_profile(request):
+   users=User.objects.filter(username=request.user)
+   context={'users':users}
+   return render(request,'finance/profile.html', context)
+
+@login_required(login_url='login')
 def dashboard(request):
     category=Category.objects.all()
-    budget=Budget.objects.all()
-    debt=Debt.objects.filter(status='Not Paid')
-    expense=Expense.objects.all()
-    context={'category':category,'budget':budget,'debt':debt,'expense':expense}
+    cat_count = category.count()
+
+    income=Income.objects.filter(owner=request.user)
+    income_count = income.count()
+
+    budgets = Budget.objects.filter(owner=request.user)
+    budget_count = budgets.count()
+
+    debt=Debt.objects.filter(owner=request.user,status='Not Paid')
+    debt_count = debt.count()
+
+    expense=Expense.objects.filter(owner=request.user)
+    expense_count = expense.count()
+
+    context={'cat_count':cat_count,'budget_count':budget_count,'debt_count':debt_count,'expense_count':expense_count,'income_count':income_count}
     return render(request, 'finance/dashboard.html',context)
     
 
@@ -135,8 +152,8 @@ def income_list(request):
 
 @login_required(login_url='login')
 def all_debt(request):
-    debts = Debt.objects.all()
-    total_debts = Debt.objects.filter(status='Not Paid')
+    debts = Debt.objects.filter(owner=request.user).order_by("-created_at")
+    total_debts = Debt.objects.filter(owner=request.user,status='Not Paid')
     # Calculate the sum of all debts
     total_debt = sum(float(debt.amount) for debt in total_debts)
     return render(request, 'finance/debt_list.html', {'debts': debts,'total_debt': total_debt})
@@ -144,6 +161,9 @@ def all_debt(request):
 # create budget
 @login_required(login_url='login')
 def create_budget(request):
+    incomes = Income.objects.filter(owner=request.user)
+    total_income = sum(float(inc.amount) for inc in incomes)
+    
     if request.method == 'POST':
         form = BudgetForm(request.POST)
         if form.is_valid():
@@ -155,7 +175,7 @@ def create_budget(request):
     else:
         form = BudgetForm()
     
-    return render(request, 'finance/create_budget.html', {'form': form})
+    return render(request, 'finance/create_budget.html', {'form': form,'total_income':total_income})
 
 
 
@@ -228,7 +248,9 @@ def add_debt(request):
     if request.method == 'POST':
         form = DebtForm(request.POST)
         if form.is_valid():
-            form.save()
+            obj=form.save(commit =False)
+            obj.owner=request.user
+            obj.save()
             messages.success(request, 'Debt Added Successfully!')
             return redirect('debt')
     else:
